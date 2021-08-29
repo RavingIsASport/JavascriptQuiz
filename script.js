@@ -26,13 +26,13 @@ var startTimer = setInterval(function (){
 var myQuestions = [
 	{
 		question: "What does HTML stand for?",
-		answers: [
-			 'Heavy Time Machine Layout',
-		   'HyperText Markup Language',
-			 'Hermione The Magic Lady',
-       'HyperText Makeup Letter'
-		],
-		correctAnswer: '2'
+		answers: {
+			a: 'Heavy Time Machine Layout',
+			b: 'HyperText Markup Language',
+			c: 'Hermione The Magic Lady',
+      d: 'HyperText Makeup Letter'
+		},
+		correctAnswer: 'b'
 	},
 	{
 		question: "In which HTML element do we put in JavaScript code?",
@@ -62,6 +62,5 @@ function showQuestions(myQuestions, quizContainer){
 
 	myQuestions.innerHTML = document.getElementById('#quizContainer')
 }
-
 
     
