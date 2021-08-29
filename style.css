@@ -1,0 +1,28 @@
+#quiz {
+  box-align: center;
+  padding: 100px;
+  display:flex;
+  justify-content: center;
+}
+#startbutton {
+  font-size: 20px;
+  background-color: coral;
+  font-family: monospace;
+}
+#timer {
+font-size:50px;
+position: absolute;
+top:  5%;
+right: 10%; 
+font-Family: monospace;
+}
+#submit{
+font-size: 18px;
+padding: 8px;
+position:absolute;
+bottom: 50%;
+right: 5%;
+background-color: #3DB2FF;
+border-radius: 50px;
+font-family: monospace;
+}
