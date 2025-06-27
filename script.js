@@ -1,66 +1,140 @@
-var startButton = document.querySelector('#startbutton');
-var quiz = document.querySelector('#quiz');
+// get elements by ID
+let nextBtn = document.getElementById("next");
+let submitBtn = document.getElementById("submit");
+let quest = document.getElementById("question");
+let optionsContainer = document.getElementById("options");
 
-startButton.addEventListener('click', function(){
-  if (startButton.hidden = true) {
-    var count = 60;
-var startTimer = setInterval(function (){
-  document.getElementById('timer').innerHTML=count;
-  count--;
-  if (count === 0){
-    clearInterval(startTimer);
-    document.getElementById('timer').innerHTML = 'Done';
-  }
-   var finish = document.querySelector('#submit')
-  finish.addEventListener('click', function(){
-    clearInterval(startTimer);
-    document.getElementById('timer').innerHTML = 'Done';
-  })
-  if (startButton.hidden = true){
-    showQuestions (myQuestions, quizContainer);
-  }
-}, 1000);
-  }
-})
-  
-var myQuestions = [
-	{
-		question: "What does HTML stand for?",
-		answers: {
-			a: 'Heavy Time Machine Layout',
-			b: 'HyperText Markup Language',
-			c: 'Hermione The Magic Lady',
-      d: 'HyperText Makeup Letter'
-		},
-		correctAnswer: 'b'
-	},
-	{
-		question: "In which HTML element do we put in JavaScript code?",
-		answers: {
-			a: '<js>',
-			b: '<script>',
-			c: '<body>',
-      d: '<link>'
-		},
-		correctAnswer: 'b'
-	},
+// Initialize variables
+var currentQuestion = 0;
+var score = 0;
+
+var quizQuestions = [
   {
-  question: "How would you write 'Hello' in an alert box?",
-    answers: {
-      a: 'msg("Hello")',
-      b: 'alertBox("Hello")',
-      c: 'document.write("Hello")',
-      d: 'alert("Hello")',
+    // generate random question
+    question: "What is the capital of France?",
+    options: ["Berlin", "Madrid", "Paris", "Rome"],
+    answer: "paris",
   },
-    correctAnswer: 'd'
-  }
+  {
+    question: "What is the chemical symbol for water?",
+    options: ["H2O", "CO2", "O2", "NaCl"],
+    answer: "h2o",
+  },
+  {
+    question: "Who wrote 'To Kill a Mockingbird'?",
+    options: [
+      "Harper Lee",
+      "Mark Twain",
+      "Ernest Hemingway",
+      "F. Scott Fitzgerald",
+    ],
+    answer: "harper lee",
+  },
+  {
+    question: "What is the powerhouse of the cell?",
+    options: ["Nucleus", "Mitochondria", "Ribosome", "Endoplasmic Reticulum"],
+    answer: "mitochondria",
+  },
+  {
+    question: "Which programming language makes websites interactive?",
+    options: ["Javascript", "Python", "Java", "C++"],
+    answer: "javascript",
+  },
+  {
+    question: "What is the largest planet in our solar system?",
+    options: ["Mars", "Jupiter", "Venus", "Saturn"],
+    answer: "jupiter",
+  },
 ];
-function showQuestions(myQuestions, quizContainer){
-	for (var i = 0; i < myQuestions.length; i++){
-    i.checked = i++;
-  }
 
-	myQuestions.innerHTML = document.getElementById('#quizContainer')
+// Load the first question
+loadQuestion(currentQuestion);
+
+// Hide the play again button initially
+let playAgainBtn = document.createElement("button");
+playAgainBtn.innerHTML = "Play Again";
+playAgainBtn.id = "play-again";
+playAgainBtn.addEventListener("click", playAgain);
+document.body.appendChild(playAgainBtn);
+
+// Hide the play again button initially
+playAgainBtn.style.display = "none";
+
+// Event listeners for buttons
+submitBtn.addEventListener("click", function () {
+  submitQuiz();
+});
+
+nextBtn.addEventListener("click", function () {
+  checkAnswer(currentQuestion);
+  currentQuestion++;
+  if (currentQuestion < quizQuestions.length) {
+    loadQuestion(currentQuestion);
+  } else {
+    alert("Quiz completed! Your score: " + score);
+    currentQuestion = 0; // Reset for next attempt
+    score = 0; // Reset score
+    loadQuestion(currentQuestion); // Load the first question again
+  }
+});
+
+// Function to load the question and options
+function loadQuestion(questIndex) {
+  // set the question text
+  quest.innerHTML = quizQuestions[questIndex].question;
+
+  // clear previous options
+  optionsContainer.innerHTML = "";
+
+  // set the options
+  quizQuestions[questIndex].options.forEach((option) => {
+    // create radio button for each option
+    let optionElement = document.createElement("input");
+    optionElement.type = "radio";
+    optionElement.name = "option";
+    optionElement.value = option.toLowerCase();
+    optionElement.id = option.toLowerCase();
+    optionsContainer.appendChild(optionElement);
+    let labelElement = document.createElement("label");
+    labelElement.htmlFor = option.toLowerCase();
+    labelElement.innerHTML = option;
+    optionsContainer.appendChild(labelElement);
+    optionsContainer.appendChild(document.createElement("br"));
+  });
+
+  // hide submit button initially
+  if (questIndex === quizQuestions.length - 1) {
+    // Last question → hide Next, show Submit
+    nextBtn.style.display = "none";
+    submitBtn.style.display = "inline-block";
+  } else {
+    // Not last question → show Next, hide Submit
+    nextBtn.style.display = "inline-block";
+    submitBtn.style.display = "none";
+  }
 }
 
-    
+// check the selected answer
+function checkAnswer(arr) {
+  let selected = document.querySelector('input[name="option"]:checked');
+  if (selected && selected.value === quizQuestions[arr].answer) {
+    score++;
+  }
+}
+
+// Function to submit the quiz and show the score
+function submitQuiz() {
+  checkAnswer(currentQuestion);
+  alert("Quiz submitted! Your score: " + score);
+  playAgainBtn.style.display = "inline-block"; // Show play again button
+}
+
+// Reset the quiz
+function playAgain() {
+  currentQuestion = 0;
+  score = 0;
+  loadQuestion(currentQuestion);
+  nextBtn.style.display = "inline-block";
+  submitBtn.style.display = "none";
+  playAgainBtn.style.display = "none"; // Hide play again button
+}
